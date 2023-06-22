@@ -3,11 +3,13 @@ import { useState } from 'react';
 import useSWR from 'swr';
 import axios from 'axios';
 import Form from 'react-bootstrap/Form';
+import TabelaPergunta1 from '../components/pergunta1/table';
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
+
 const IndexPage = () => {
-  const [selectedQuestion, setSelectedQuestion] = useState('');
+  const [selectedQuestion, setSelectedQuestion] = useState<any | null>("");
 
   const questions = [
     { id: 1, text: 'Pergunta 1' },
@@ -18,19 +20,38 @@ const IndexPage = () => {
     // Adicione mais perguntas conforme necessário
   ];
 
+  // dados mockados apenas para visualização
+  const tableDataMock = [
+    {
+      id: 'Teste',
+      subgrupo: 'A2',
+    },
+  ];
+
   const { data: tableData } = useSWR(
     selectedQuestion ? `/api/data/${selectedQuestion}` : null,
     fetcher
   );
 
-  const handleQuestionChange = (event) => {
+  const handleQuestionChange = (event: any): void => {
     setSelectedQuestion(event.target.value);
   };
+
+  const renderTable = (question: string): any => {
+    switch (parseInt(question)) {
+      case 1:
+        return <TabelaPergunta1 data={tableDataMock} />
+      case 2:
+        return <TabelaPergunta1 data={tableDataMock} />
+      default:
+        return <div>Selecione uma pergunta para exibir os dados</div>
+    }
+  }
 
   return (
 
     <div>
-      <h1>Escolha uma pergunta:</h1>
+      <h1 className="my-3">Escolha uma pergunta:</h1>
       <Form.Select aria-label="Selecione uma pergunta" value={selectedQuestion} onChange={handleQuestionChange}>
         <option value="">Selecione uma pergunta</option>
         {questions.map((question) => (
@@ -40,29 +61,9 @@ const IndexPage = () => {
         ))}
       </Form.Select>
 
-
-      {selectedQuestion && tableData.length > 0 ? (
-        <table>
-          <thead>
-            <tr>
-              <th>Coluna 1</th>
-              <th>Coluna 2</th>
-              {/* Adicione mais cabeçalhos de coluna conforme necessário */}
-            </tr>
-          </thead>
-          <tbody>
-            {tableData.map((row) => (
-              <tr key={row.id}>
-                <td>{row.column1}</td>
-                <td>{row.column2}</td>
-                {/* Adicione mais células de dados conforme necessário */}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      ) : (
-        <div>Selecione uma pergunta para exibir os dados</div>
-      )}
+      {selectedQuestion && tableDataMock.length > 0 ? (
+        renderTable(selectedQuestion)
+      ) : <div>Selecione uma pergunta para exibir os dados</div>}
     </div>
   );
 };
