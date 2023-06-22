@@ -1,5 +1,9 @@
 'use client'
 import { useState } from 'react';
+import useSWR from 'swr';
+import axios from 'axios';
+
+const fetcher = (url) => axios.get(url).then((res) => res.data);
 
 const IndexPage = () => {
   const [selectedQuestion, setSelectedQuestion] = useState(null);
@@ -8,14 +12,15 @@ const IndexPage = () => {
     { id: 1, text: 'Pergunta 1' },
     { id: 2, text: 'Pergunta 2' },
     { id: 3, text: 'Pergunta 3' },
+    { id: 4, text: 'Pergunta 4' },
+    { id: 5, text: 'Pergunta 5' },
     // Adicione mais perguntas conforme necessário
   ];
 
-  const tableData = [
-    { id: 1, column1: 'Valor 1', column2: 'Valor 2' },
-    { id: 2, column1: 'Valor 3', column2: 'Valor 4' },
-    // Adicione mais linhas de dados conforme necessário
-  ];
+  const { data: tableData } = useSWR(
+    selectedQuestion ? `/api/data/${selectedQuestion}` : null,
+    fetcher
+  );
 
   const handleQuestionChange = (event) => {
     setSelectedQuestion(event.target.value);
