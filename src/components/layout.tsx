@@ -5,7 +5,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import icon from '../assets/images/icon.jpeg'
 
-export default function Layout({ children }) {
+export default function Layout({ children }: any) {
   return (
     <>
       <Navbar expand="lg" className="bg-body-tertiary">
