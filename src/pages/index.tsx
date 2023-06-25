@@ -43,7 +43,9 @@ const IndexPage = () => {
     '1': "empresas",
     '2': "tarifas/vigenciaempresas", // /2010-01-01/2011-12-12
     '3': "tarifas/descclasse",
-    '4': "tarifas/modalidadesregistro"
+    '4': "tarifas/modalidadesregistro",
+    '5': "tarifas/valortarifapordistribuidora",
+    '6': "tarifas/numtarifasporposto",
   };
   // dados mockados apenas para visualização
   const tableDataMock = [
