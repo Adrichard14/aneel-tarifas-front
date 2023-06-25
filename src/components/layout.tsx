@@ -3,7 +3,7 @@ import Link from 'next/link'
 import React from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import icon from '../assets/images/icon.jpeg'
+import icon from '../assets/images/aneel-logo.png'
 
 export default function Layout({ children }: any) {
   return (
