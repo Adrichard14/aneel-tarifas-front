@@ -2,9 +2,14 @@
 import { useState, useEffect } from 'react';
 import useSWR, { Fetcher } from 'swr';
 import axios from 'axios';
+import { Row, Col } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
+
 import TabelaPergunta1 from '../components/perguntas/pergunta1/table';
 import TabelaPergunta2 from '../components/perguntas/pergunta2/table';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 
 const fetcher: Fetcher<any, string> = (url: string) => axios.get(url).then((res) => res.data);
 const apiURL = process.env.NEXT_PUBLIC_API_URL;
@@ -12,6 +17,7 @@ const apiURL = process.env.NEXT_PUBLIC_API_URL;
 const IndexPage = () => {
   const [selectedQuestion, setSelectedQuestion] = useState<any | string>("");
   const [tableData, setTableData] = useState<any | null>([]);
+  const [startDate, setStartDate] = useState(new Date());
 
   const questions = [
     { id: 1, text: 'Quais são as distribuidoras de energia elétrica registradas no conjunto de dados?' },
@@ -74,24 +80,53 @@ const IndexPage = () => {
         return <div>Selecione uma pergunta para exibir os dados</div>
     }
   }
-
+  // const [value, onChange] = useState(new Date());
   return (
+    <>
+      <Row className="justify-content-center align-items-center">
+        <Col className="d-flex mt-4">
+          <Col>
+            <h4>Escolha uma pergunta:</h4>
+            <Form.Select aria-label="Selecione uma pergunta" value={selectedQuestion} onChange={handleQuestionChange}>
+              <option value="">Selecione uma pergunta</option>
+              {questions.map((question) => (
+                <option key={question.id} value={question.id}>
+                  {question.text}
+                </option>
+              ))}
+            </Form.Select>
+          </Col>
+          <Col>
+            <h4 className="mx-2">Filtro por data: </h4>
+            <Form.Group className="mb-3 d-flex" controlId="exampleForm.ControlInput1">
+              <Col className="d-flex flex-column mx-2">
+                <DatePicker className="form-control" name="initDate" selected={startDate} onChange={(date: any) => setStartDate(date)} />
+                <Form.Label>Data de início</Form.Label>
+              </Col>
 
-    <div>
-      <h1 className="my-3">Escolha uma pergunta:</h1>
-      <Form.Select aria-label="Selecione uma pergunta" value={selectedQuestion} onChange={handleQuestionChange}>
-        <option value="">Selecione uma pergunta</option>
-        {questions.map((question) => (
-          <option key={question.id} value={question.id}>
-            {question.text}
-          </option>
-        ))}
-      </Form.Select>
-
-      {selectedQuestion && tableData.length > 0 ? (
-        renderTable(selectedQuestion)
-      ) : <div>Selecione uma pergunta para exibir os dados</div>}
-    </div>
+              <Col className="d-flex flex-column mx-2">
+                <DatePicker className="form-control" name="initDate" selected={startDate} onChange={(date: any) => setStartDate(date)} />
+                <Form.Label>Data final</Form.Label>
+              </Col>
+            </Form.Group>
+          </Col>
+        </Col>
+        {/* <Col>
+          <label>Data de início</label>
+          <DatePicker selected={startDate} onChange={(date: any) => setStartDate(date)} />
+        </Col> */}
+      </Row>
+      <Row>
+        {selectedQuestion && tableData.length > 0 ? (
+          renderTable(selectedQuestion)
+        ) :
+          <Row className="d-flex justify-content-center">
+            <Col>
+              <h4 className="text-center">Selecione uma pergunta para exibir os dados</h4>
+            </Col>
+          </Row>}
+      </Row>
+    </>
   );
 };
 
