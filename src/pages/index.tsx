@@ -1,30 +1,37 @@
 'use client'
-import { useState } from 'react';
-import useSWR from 'swr';
+import { useState, useEffect } from 'react';
+import useSWR, { Fetcher } from 'swr';
 import axios from 'axios';
 import Form from 'react-bootstrap/Form';
 import TabelaPergunta1 from '../components/perguntas/pergunta1/table';
+import TabelaPergunta2 from '../components/perguntas/pergunta2/table';
 
-const fetcher = (url: string) => axios.get(url).then((res) => res.data);
-
+const fetcher: Fetcher<any, string> = (url: string) => axios.get(url).then((res) => res.data);
+const apiURL = process.env.NEXT_PUBLIC_API_URL;
 
 const IndexPage = () => {
-  const [selectedQuestion, setSelectedQuestion] = useState<any | null>("");
+  const [selectedQuestion, setSelectedQuestion] = useState<any | string>("");
+  const [tableData, setTableData] = useState<any | null>([]);
 
   const questions = [
     { id: 1, text: 'Quais são as distribuidoras de energia elétrica registradas no conjunto de dados?' },
     { id: 2, text: 'Quais são as datas de início e fim da vigência das tarifas para cada distribuidora?' },
-    { id: 3, text: 'Quais são as classes de unidades consumidoras definidas na Resolução Normativa nº 1000/2021?'},
+    { id: 3, text: 'Quais são as classes de unidades consumidoras definidas na Resolução Normativa nº 1000/2021?' },
     { id: 4, text: 'Quais são as modalidades tarifárias disponíveis e a quantidade de registros separados por data?' },
     { id: 5, text: 'Qual é o valor da Tarifa de Uso do Sistema de Distribuição (TUSD) para cada distribuidora e quais são as distribuidoras que mais pagam o TUSD?' },
-    { id: 6, text: 'Quais são os postos tarifários definidos e a quantidade de tarifas registrada para cada um deles?'},
-    { id: 7, text: 'Quais são os subgrupos tarifários disponíveis e quais são os critérios de aplicação para cada um deles?'},
-    { id: 8, text: 'Quais são as unidades consumidoras que mais consumiram em períodos de 6 meses?'},
-    { id: 9, text: 'Quais são as resoluções homologatórias registradas e qual é o número e data de cada uma delas?'},
-    { id: 10, text: 'Quais são os agentes regulados pela ANEEL, mostrando também a quantidade tarifada por cada um aos consumidores?'},
+    { id: 6, text: 'Quais são os postos tarifários definidos e a quantidade de tarifas registrada para cada um deles?' },
+    { id: 7, text: 'Quais são os subgrupos tarifários disponíveis e quais são os critérios de aplicação para cada um deles?' },
+    { id: 8, text: 'Quais são as unidades consumidoras que mais consumiram em períodos de 6 meses?' },
+    { id: 9, text: 'Quais são as resoluções homologatórias registradas e qual é o número e data de cada uma delas?' },
+    { id: 10, text: 'Quais são os agentes regulados pela ANEEL, mostrando também a quantidade tarifada por cada um aos consumidores?' },
     // Adicione mais perguntas conforme necessário
   ];
 
+  // adicionar as URL's para as respectivas perguntas
+  const URLs: any = {
+    '1': "tarifas/vigenciaempresas/2010-01-01/2011-12-12",
+    '2': "tarifas/vigenciaempresas/2010-01-01/2011-12-12",
+  };
   // dados mockados apenas para visualização
   const tableDataMock = [
     {
@@ -33,21 +40,36 @@ const IndexPage = () => {
     },
   ];
 
-  const { data: tableData } = useSWR(
-    selectedQuestion ? `/api/data/${selectedQuestion}` : null,
-    fetcher
-  );
+  useEffect(() => {
+    if (!selectedQuestion)
+      return;
+    const loadData = async () => {
+      console.log(selectedQuestion);
+      const { data } = await axios.get(`${apiURL}${URLs[selectedQuestion]}`, {
+        method: 'get',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        withCredentials: false,
+      });
 
-  const handleQuestionChange = (event: any): void => {
+      setTableData(data);
+
+    }
+    loadData();
+  }, [selectedQuestion]);
+
+  const handleQuestionChange = async (event: any): Promise<void> => {
     setSelectedQuestion(event.target.value);
   };
 
   const renderTable = (question: string): any => {
     switch (parseInt(question)) {
       case 1:
-        return <TabelaPergunta1 data={tableDataMock} />
+        return <TabelaPergunta1 data={tableData} />
       case 2:
-        return <TabelaPergunta1 data={tableDataMock} />
+        return <TabelaPergunta2 data={tableData} />
       default:
         return <div>Selecione uma pergunta para exibir os dados</div>
     }
@@ -66,7 +88,7 @@ const IndexPage = () => {
         ))}
       </Form.Select>
 
-      {selectedQuestion && tableDataMock.length > 0 ? (
+      {selectedQuestion && tableData.length > 0 ? (
         renderTable(selectedQuestion)
       ) : <div>Selecione uma pergunta para exibir os dados</div>}
     </div>
