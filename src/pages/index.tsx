@@ -36,14 +36,14 @@ const IndexPage = () => {
     { id: 8, text: 'Quais são as unidades consumidoras que mais consumiram em períodos de 6 meses?' },
     { id: 9, text: 'Quais são as resoluções homologatórias registradas e qual é o número e data de cada uma delas?' },
     { id: 10, text: 'Quais são os agentes regulados pela ANEEL, mostrando também a quantidade tarifada por cada um aos consumidores?' },
-    // Adicione mais perguntas conforme necessário
   ];
 
   // adicionar as URL's para as respectivas perguntas
   const URLs: any = {
     '1': "empresas",
     '2': "tarifas/vigenciaempresas", // /2010-01-01/2011-12-12
-    '3': "tarifas/descclasse"
+    '3': "tarifas/descclasse",
+    '4': "tarifas/modalidadesregistro"
   };
   // dados mockados apenas para visualização
   const tableDataMock = [
