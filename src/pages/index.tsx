@@ -35,8 +35,9 @@ const IndexPage = () => {
 
   // adicionar as URL's para as respectivas perguntas
   const URLs: any = {
-    '1': "tarifas/vigenciaempresas/2010-01-01/2011-12-12",
+    '1': "empresas",
     '2': "tarifas/vigenciaempresas/2010-01-01/2011-12-12",
+    '3': "tarifas/descclasse"
   };
   // dados mockados apenas para visualização
   const tableDataMock = [
