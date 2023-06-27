@@ -46,6 +46,10 @@ const IndexPage = () => {
     '4': "tarifas/modalidadesregistro",
     '5': "tarifas/valortarifapordistribuidora",
     '6': "tarifas/numtarifasporposto",
+    '7': "subgrupos",
+    '8': "",
+    '9': "tarifas/resolucoes",
+    '10': "tarifas/agentestarifas",
   };
   // dados mockados apenas para visualização
   const tableDataMock = [

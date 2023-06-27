@@ -14,7 +14,7 @@ export default function Table({ data }: any) {
         <tbody>
           {data.map((row: any) => (
             <tr key={row.id}>
-              <td>{row.DscResolucaoHomologatoria}</td>
+              <td>{row.dscresolucaohomologatoria}</td>
               {/* Adicione mais células de dados conforme necessário */}
             </tr>
           ))}
