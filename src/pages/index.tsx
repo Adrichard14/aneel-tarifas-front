@@ -7,6 +7,14 @@ import Form from 'react-bootstrap/Form';
 import moment from 'moment';
 import TabelaPergunta1 from '../components/perguntas/pergunta1/table';
 import TabelaPergunta2 from '../components/perguntas/pergunta2/table';
+import TablePergunta3 from '../components/perguntas/pergunta3/table';
+import TablePergunta4 from '../components/perguntas/pergunta4/table';
+import TablePergunta5 from '../components/perguntas/pergunta5/table';
+import TablePergunta6 from '../components/perguntas/pergunta6/table';
+import TablePergunta7 from '../components/perguntas/pergunta7/table';
+import TablePergunta8 from '../components/perguntas/pergunta8/table';
+import TablePergunta9 from '../components/perguntas/pergunta9/table';
+import TablePergunta10 from '../components/perguntas/pergunta10/table';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -98,6 +106,22 @@ const IndexPage = () => {
         return <TabelaPergunta1 data={tableData} />
       case 2:
         return <TabelaPergunta2 data={tableData} />
+      case 3:
+        return <TablePergunta3 data={tableData} />
+      case 4:
+        return <TablePergunta4 data={tableData} />
+      case 5:
+        return <TablePergunta5 data={tableData} />
+      case 6:
+        return <TablePergunta6 data={tableData} />
+      case 7:
+        return <TablePergunta7 data={tableData} />
+      case 8:
+        return <TablePergunta8 data={tableData} />
+      case 9:
+        return <TablePergunta9 data={tableData} />
+      case 10:
+        return <TablePergunta10 data={tableData} />
       default:
         return <div>Selecione uma pergunta para exibir os dados</div>
     }
