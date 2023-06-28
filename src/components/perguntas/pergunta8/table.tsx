@@ -16,9 +16,9 @@ export default function Table({ data }: any) {
         <tbody>
           {data.map((row: any) => (
             <tr key={row.id}>
-              <td>{row.fk_DscClasse}</td>
-              <td>{row.fk_DDescSubClasse}</td>
-              <td>{row.TotalConsumo}</td>
+              <td>{row.dscclasse}</td>
+              <td>{row.dscsubclasse}</td>
+              <td>{row.totalconsumo}</td>
               {/* Adicione mais células de dados conforme necessário */}
             </tr>
           ))}

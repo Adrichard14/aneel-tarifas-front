@@ -55,7 +55,7 @@ const IndexPage = () => {
     '5': "tarifas/valortarifapordistribuidora",
     '6': "tarifas/numtarifasporposto",
     '7': "subgrupos",
-    '8': "",
+    '8': "tarifas/unidadesconsumidoras",
     '9': "tarifas/resolucoes",
     '10': "tarifas/agentestarifas",
   };
