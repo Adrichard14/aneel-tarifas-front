@@ -15,8 +15,8 @@ export default function Table({ data }: any) {
         <tbody>
           {data.map((row: any) => (
             <tr key={row.id}>
-              <td>{row.fk_numcnpjdistribuidora}</td>
-              <td>{row.valor_tusd}</td>
+              <td>{row.numcnpjdistribuidora}</td>
+              <td>{row.vlrtusd}</td>
               {/* Adicione mais células de dados conforme necessário */}
             </tr>
           ))}
