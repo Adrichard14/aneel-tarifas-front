@@ -4,7 +4,6 @@ import useSWR, { Fetcher } from 'swr';
 import axios from 'axios';
 import { Row, Col } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
-import moment from 'moment';
 import TabelaPergunta1 from '../components/perguntas/pergunta1/table';
 import TabelaPergunta2 from '../components/perguntas/pergunta2/table';
 import TablePergunta3 from '../components/perguntas/pergunta3/table';
@@ -16,23 +15,12 @@ import TablePergunta8 from '../components/perguntas/pergunta8/table';
 import TablePergunta9 from '../components/perguntas/pergunta9/table';
 import TablePergunta10 from '../components/perguntas/pergunta10/table';
 import DatePicker from "react-datepicker";
+import useTableData from '../hooks/useTableData';
 import "react-datepicker/dist/react-datepicker.css";
 
-
-const fetcher: Fetcher<any, string> = (url: string) => axios.get(url).then((res) => res.data);
-const apiURL = process.env.NEXT_PUBLIC_API_URL;
-
 const IndexPage = () => {
-  const [selectedQuestion, setSelectedQuestion] = useState<any | string>("");
-  const [searchQuestion, setSearchQuestion] = useState<any | string>("");
-  const [tableData, setTableData] = useState<any | null>([]);
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { tableData, isLoading, handleQuestionChange, showDateFilter, loadData, selectedQuestion, startDate, setStartDate, setEndDate, endDate } = useTableData();
   // Adicionar aqui novas questões que irão utilizar o filtro por data
-  const questionsWithDateFilter = ['2'];
-  const [showDateFilter, setShowDateFilter] = useState<boolean>(true);
-
   const questions = [
     { id: 1, text: 'Quais são as distribuidoras de energia elétrica registradas no conjunto de dados?' },
     { id: 2, text: 'Quais são as datas de início e fim da vigência das tarifas para cada distribuidora?' },
@@ -45,56 +33,6 @@ const IndexPage = () => {
     { id: 9, text: 'Quais são as resoluções homologatórias registradas e qual é o número e data de cada uma delas?' },
     { id: 10, text: 'Quais são os agentes regulados pela ANEEL, mostrando também a quantidade tarifada por cada um aos consumidores?' },
   ];
-
-  // adicionar as URL's para as respectivas perguntas
-  const URLs: any = {
-    '1': "empresas",
-    '2': "tarifas/vigenciaempresas", // /2010-01-01/2011-12-12
-    '3': "tarifas/descclasse",
-    '4': "tarifas/modalidadesregistro",
-    '5': "tarifas/valortarifapordistribuidora",
-    '6': "tarifas/numtarifasporposto",
-    '7': "subgrupos",
-    '8': "tarifas/unidadesconsumidoras",
-    '9': "tarifas/resolucoes",
-    '10': "tarifas/agentestarifas",
-  };
-  // dados mockados apenas para visualização
-  const tableDataMock = [
-    {
-      id: 'Teste',
-      fk_numcnpjdistribuidora: '000000000000000',
-    },
-  ];
-
-  const loadData = async (): Promise<void> => {
-    if (!selectedQuestion)
-      return;
-    setIsLoading(true);
-    setTableData([]);
-    const extraParams = showDateFilter ? `/${moment(startDate).format('YYYY-MM-DD')}/${moment(endDate).format('YYYY-MM-DD')}` : '';
-    let questionURL = `${apiURL}${URLs[selectedQuestion]}${extraParams}`;
-    try {
-      const { data } = await axios.get(questionURL, {
-        method: 'get',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        withCredentials: false,
-      });
-      setTableData(data);
-      setIsLoading(false);
-    } catch (error) {
-      setIsLoading(false);
-      console.log(error);
-    }
-  }
-
-  const handleQuestionChange = async (event: any): Promise<void> => {
-    setSelectedQuestion(event.target.value);
-    questionsWithDateFilter.indexOf(event.target.value) === -1 ? setShowDateFilter(false) : setShowDateFilter(true);
-  };
 
   const handleSubmit = async (): Promise<void> => {
     await loadData();
@@ -126,7 +64,6 @@ const IndexPage = () => {
         return <div>Selecione uma pergunta para exibir os dados</div>
     }
   }
-  // const [value, onChange] = useState(new Date());
   return (
     <>
       <Row className="justify-content-center align-items-center">
@@ -174,7 +111,7 @@ const IndexPage = () => {
         ) :
           <Row className="d-flex justify-content-center">
             <Col>
-              <h4 className="text-center">{isLoading ? 'Carregando...'  : 'Selecione uma pergunta para exibir os dados'}</h4>
+              <h4 className="text-center">{isLoading ? 'Carregando...' : 'Selecione uma pergunta para exibir os dados'}</h4>
             </Col>
           </Row>}
       </Row>
