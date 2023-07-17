@@ -1,68 +1,22 @@
 'use client'
-import { useState, useEffect } from 'react';
-import useSWR, { Fetcher } from 'swr';
-import axios from 'axios';
 import { Row, Col } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
-import TabelaPergunta1 from '../components/perguntas/pergunta1/table';
-import TabelaPergunta2 from '../components/perguntas/pergunta2/table';
-import TablePergunta3 from '../components/perguntas/pergunta3/table';
-import TablePergunta4 from '../components/perguntas/pergunta4/table';
-import TablePergunta5 from '../components/perguntas/pergunta5/table';
-import TablePergunta6 from '../components/perguntas/pergunta6/table';
-import TablePergunta7 from '../components/perguntas/pergunta7/table';
-import TablePergunta8 from '../components/perguntas/pergunta8/table';
-import TablePergunta9 from '../components/perguntas/pergunta9/table';
-import TablePergunta10 from '../components/perguntas/pergunta10/table';
 import DatePicker from "react-datepicker";
 import useTableData from '../hooks/useTableData';
+import useRenderTable from '../hooks/useRenderTable';
+import questions from '../utils/questions';
 import "react-datepicker/dist/react-datepicker.css";
+import { Question } from '../types/question';
 
 const IndexPage = () => {
   const { tableData, isLoading, handleQuestionChange, showDateFilter, loadData, selectedQuestion, startDate, setStartDate, setEndDate, endDate } = useTableData();
-  // Adicionar aqui novas questões que irão utilizar o filtro por data
-  const questions = [
-    { id: 1, text: 'Quais são as distribuidoras de energia elétrica registradas no conjunto de dados?' },
-    { id: 2, text: 'Quais são as datas de início e fim da vigência das tarifas para cada distribuidora?' },
-    { id: 3, text: 'Quais são as classes de unidades consumidoras definidas na Resolução Normativa nº 1000/2021?' },
-    { id: 4, text: 'Quais são as modalidades tarifárias disponíveis e a quantidade de registros separados por data?' },
-    { id: 5, text: 'Qual é o valor da Tarifa de Uso do Sistema de Distribuição (TUSD) para cada distribuidora e quais são as distribuidoras que mais pagam o TUSD?' },
-    { id: 6, text: 'Quais são os postos tarifários definidos e a quantidade de tarifas registrada para cada um deles?' },
-    { id: 7, text: 'Quais são os subgrupos tarifários disponíveis e quais são os critérios de aplicação para cada um deles?' },
-    { id: 8, text: 'Quais são as unidades consumidoras que mais consumiram em períodos de 6 meses?' },
-    { id: 9, text: 'Quais são as resoluções homologatórias registradas e qual é o número e data de cada uma delas?' },
-    { id: 10, text: 'Quais são os agentes regulados pela ANEEL, mostrando também a quantidade tarifada por cada um aos consumidores?' },
-  ];
 
   const handleSubmit = async (): Promise<void> => {
     await loadData();
   }
 
   const renderTable = (question: string): any => {
-    switch (parseInt(question)) {
-      case 1:
-        return <TabelaPergunta1 data={tableData} />
-      case 2:
-        return <TabelaPergunta2 data={tableData} />
-      case 3:
-        return <TablePergunta3 data={tableData} />
-      case 4:
-        return <TablePergunta4 data={tableData} />
-      case 5:
-        return <TablePergunta5 data={tableData} />
-      case 6:
-        return <TablePergunta6 data={tableData} />
-      case 7:
-        return <TablePergunta7 data={tableData} />
-      case 8:
-        return <TablePergunta8 data={tableData} />
-      case 9:
-        return <TablePergunta9 data={tableData} />
-      case 10:
-        return <TablePergunta10 data={tableData} />
-      default:
-        return <div>Selecione uma pergunta para exibir os dados</div>
-    }
+    return useRenderTable(question, tableData);
   }
   return (
     <>
@@ -72,7 +26,7 @@ const IndexPage = () => {
             <h4 className="mt-3">Escolha uma pergunta:</h4>
             <Form.Select aria-label="Selecione uma pergunta" value={selectedQuestion} onChange={handleQuestionChange}>
               <option value="">Selecione uma pergunta</option>
-              {questions.map((question) => (
+              {questions.map((question: Question) => (
                 <option key={question.id} value={question.id}>
                   {question.text}
                 </option>

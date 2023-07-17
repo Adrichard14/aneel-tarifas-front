@@ -4,8 +4,6 @@ import moment from 'moment';
 import URLS from "@/utils/URLS";
 
 const apiURL = process.env.NEXT_PUBLIC_API_URL;
-// adicionar as URL's para as respectivas perguntas
-
 
 const useTableData = () => {
   const [showDateFilter, setShowDateFilter] = useState<boolean>(true);
@@ -41,6 +39,7 @@ const useTableData = () => {
   }
 
   const handleQuestionChange = async (event: any): Promise<void> => {
+    setTableData([]);
     setSelectedQuestion(event.target.value);
     questionsWithDateFilter.indexOf(event.target.value) === -1 ? setShowDateFilter(false) : setShowDateFilter(true);
   };
