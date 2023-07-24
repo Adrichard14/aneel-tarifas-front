@@ -126,22 +126,14 @@ const IndexPage = () => {
 
   const Logged = () => {
     const location = useLocation();
-    if (location.state.logged == true){
-      setIsLogged(location.state.logged);
-    }
-  }  
-  if (!isLogged){
-    return (
-      <div className="d-flex justify-content-center align-items-center vh-100">
-        <h3>You need to be logged in to access this page.</h3>
-        {/* You can add a login button or a redirect to the login page */}
-      </div>
-    );
-  }
+    useEffect(() => {
+      if (location.state?.logged === true) {
+        setIsLogged(true);
+      }
+    }, [location.state]);
+  };
 
-  useEffect(() =>{
-    Logged();
-  })
+  Logged();
 
 
   return (

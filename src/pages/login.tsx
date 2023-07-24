@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
 
-    const [email, setEmail] = useState("");
-    const [senha, setSenha] = useState("");
-    const [logado, setLogado] = useState(false);
+    const [email, setEmail] = useState<string>("");
+    const [senha, setSenha] = useState<string>("");
+    const [logado, setLogado] = useState<boolean>(false);
 
     const navigate = useNavigate()
 
@@ -18,14 +18,36 @@ const LoginPage = () => {
         setSenha(e.target.value);
     }
 
-    const handleLogadoChange = async (e: any): Promise<void> => {
-        setLogado(!logado)
-        handleRedirectHome();
+    const handleLogadoChange = () => {
+        setLogado(!logado);
+    };
+
+    function verifyLogin(email: string, senha: string) {
+        if (email !== "" && senha !== ""){
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
+    const handleLogin = async (e: any): Promise<void> => {
+        if (verifyLogin(email, senha)) {
+          handleLogadoChange();
+          console.log(logado);
+          // Save user data to localStorage
+          const userData = { email, senha };
+          localStorage.setItem("user", JSON.stringify(userData));
+          handleRedirectHome();
+        } else {
+          alert("Preencha os campos para realizar o Login!!!");
+        }
+      };
+
     const handleRedirectHome = () => {
-        navigate('/', {state: {logged: logado}})
-    }
+    console.log(logado); // Log the updated value of logado.
+    navigate('/', { state: { logged: logado } });
+    };
 
     return (
         <div className="container d-flex justify-content-center align-content-center">
@@ -52,7 +74,7 @@ const LoginPage = () => {
                                 id="password" 
                                 placeholder="Senha"/>
                         </div>
-                        <button onClick={handleLogadoChange} type="submit" className="btn btn-primary">Entrar</button>
+                        <button onClick={handleLogin} type="submit" className="btn btn-primary">Entrar</button>
                     </form>
                 </div>
             </div>

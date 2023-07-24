@@ -13,7 +13,9 @@ export default function Layout({ children }: any) {
   const [isLoginPage, setIsLoginPage] = useState(false);
   const navigate = useNavigate();
   const loginPagePath = '/login';
+  const homePagePath = '/';
   const location = useLocation();
+
   useEffect(() => {
     if (location.pathname == loginPagePath) {
       return setIsLoginPage(true);
@@ -27,6 +29,12 @@ export default function Layout({ children }: any) {
   const handleLoginRedirect = () => {
     navigate('/login'); // Redireciona para a página de login
   };
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    navigate('/');
+  };
+
   return (
     <>
       <Navbar expand="lg" className="bg-body-tertiary">
@@ -38,7 +46,7 @@ export default function Layout({ children }: any) {
             <Nav className="me-auto">
               <NavLink to={"/"} style={{ textDecoration: 'none' }}>Início</NavLink>
             </Nav>
-            {!isLoginPage && (<Button onClick={handleLoginRedirect}>Login</Button>)}
+            {!isLoginPage &&  (<Button onClick={handleLogout} className="btn btn-danger">Sair</Button>)}
           </Navbar.Collapse>
         </Container>
       </Navbar>
