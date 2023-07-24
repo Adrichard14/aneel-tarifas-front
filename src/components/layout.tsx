@@ -19,8 +19,6 @@ export default function Layout({ children }: any) {
       return setIsLoginPage(true);
     }
     if (!localStorage.getItem("user") && !(location.pathname == loginPagePath)) {
-      console.log(!localStorage.getItem("user"))
-      console.log(!(location.pathname == loginPagePath))
       navigate('/login');
     }
     return setIsLoginPage(false);
