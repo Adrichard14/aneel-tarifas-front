@@ -8,6 +8,7 @@ import { useLocation, NavLink } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
+import useAuth from '../hooks/useAuth';
 
 export default function Layout({ children }: any) {
   const [isLoginPage, setIsLoginPage] = useState(false);
@@ -20,7 +21,8 @@ export default function Layout({ children }: any) {
     if (location.pathname == loginPagePath) {
       return setIsLoginPage(true);
     }
-    if (!localStorage.getItem("user") && !(location.pathname == loginPagePath)) {
+    let user = useAuth();
+    if (!user && !(location.pathname == loginPagePath)) {
       navigate('/login');
     }
     return setIsLoginPage(false);
@@ -46,7 +48,7 @@ export default function Layout({ children }: any) {
             <Nav className="me-auto">
               <NavLink to={"/"} style={{ textDecoration: 'none' }}>Início</NavLink>
             </Nav>
-            {!isLoginPage &&  (<Button onClick={handleLogout} className="btn btn-danger">Sair</Button>)}
+            {!isLoginPage && (<Button onClick={handleLogout} className="btn btn-danger">Sair</Button>)}
           </Navbar.Collapse>
         </Container>
       </Navbar>
