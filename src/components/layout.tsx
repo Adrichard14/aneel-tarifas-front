@@ -7,28 +7,28 @@ import icon from '../assets/images/icon.jpeg';
 import { useLocation, NavLink } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
-
-
+import { useState, useEffect } from 'react';
 
 export default function Layout({ children }: any) {
-  const location = useLocation();
-  const loginPagePath = '/login';
-  const isLoginPage = location.pathname == loginPagePath;
+  const [isLoginPage, setIsLoginPage] = useState(false);
   const navigate = useNavigate();
-  const logado = true;
+  const loginPagePath = '/login';
+  const location = useLocation();
+  useEffect(() => {
+    if (location.pathname == loginPagePath) {
+      return setIsLoginPage(true);
+    }
+    if (!localStorage.getItem("user") && !(location.pathname == loginPagePath)) {
+      console.log(!localStorage.getItem("user"))
+      console.log(!(location.pathname == loginPagePath))
+      navigate('/login');
+    }
+    return setIsLoginPage(false);
+  }, [location.pathname]);
 
   const handleLoginRedirect = () => {
     navigate('/login'); // Redireciona para a página de login
   };
-
-  const BotaoLogin = () => {
-    if (!isLoginPage) {
-      return(
-        <Button onClick={handleLoginRedirect}>Login</Button>
-      );
-    }
-  }
-
   return (
     <>
       <Navbar expand="lg" className="bg-body-tertiary">
@@ -40,7 +40,7 @@ export default function Layout({ children }: any) {
             <Nav className="me-auto">
               <NavLink to={"/"} style={{ textDecoration: 'none' }}>Início</NavLink>
             </Nav>
-            <BotaoLogin/>
+            {!isLoginPage && (<Button onClick={handleLoginRedirect}>Login</Button>)}
           </Navbar.Collapse>
         </Container>
       </Navbar>
