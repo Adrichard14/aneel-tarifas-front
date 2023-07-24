@@ -1,13 +1,19 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Layout from '../components/layout';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import IndexPage from '.';
 import LoginPage from './login';
 
 export default function MyApp({ Component, pageProps }: any) {
+  const [hasWindow, setHasWindow] = useState(false);
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setHasWindow(true);
+    }
+  }, []);
+
   return (
-    typeof window !== 'undefined' ? (
+    hasWindow ? (
       <Router>
         <Layout>
           <Routes>
