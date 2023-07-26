@@ -1,4 +1,5 @@
 'use client'
+import useIP from "@/hooks/useIP";
 import React, { useState } from "react"
 import { useNavigate } from "react-router-dom";
 
@@ -7,6 +8,8 @@ const LoginPage = () => {
     const [email, setEmail] = useState<string>("");
     const [senha, setSenha] = useState<string>("");
     const [logado, setLogado] = useState<boolean>(false);
+    const userIP = useIP();
+    console.log(userIP);
 
     const navigate = useNavigate()
 
