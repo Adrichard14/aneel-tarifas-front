@@ -1,6 +1,6 @@
 'use client'
 import useIP from "@/hooks/useIP";
-import React, { useState } from "react"
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import loginAuth from "@/hooks/loginAuth";
 import useAuth from "@/hooks/useAuth";
@@ -30,23 +30,23 @@ const LoginPage = () => {
         setLogado(!logado);
     };
 
-    function verifyLogin(): boolean {
+    function verifyLogin(): boolean { // verifica se os campos não estão vazios
         return email !== "" && senha !== "";
     }
     
     const handleLogin = (e: React.MouseEvent<HTMLButtonElement>): void => {
         e.preventDefault(); // Evita o comportamento padrão do botão submit
         if (verifyLogin()) {
-            handleLogadoChange();
             // Salva os dados do usuário no localStorage
-            loginAuth(email, senha);
-            if (useAuth()){
+            if (loginAuth(email, senha)){
+                handleLogadoChange();
                 handleRedirectHome();
+
             }else{
                 setTextAlert("Email e/ou senha incorretos!!");
             }
 
-        } else {
+        }else {
             setShowAlert(true); // Exibe o alerta
         }
     };

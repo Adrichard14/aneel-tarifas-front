@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import useAuth from '../hooks/useAuth';
+import loginAuth from '@/hooks/loginAuth';
 
 export default function Layout({ children }: any) {
   const [isLoginPage, setIsLoginPage] = useState(false);
@@ -21,7 +22,7 @@ export default function Layout({ children }: any) {
     if (location.pathname == loginPagePath) {
       return setIsLoginPage(true);
     }
-    let user = useAuth();
+    let user = localStorage.getItem("user");
     if (!user && !(location.pathname == loginPagePath)) {
       navigate('/login');
     }
