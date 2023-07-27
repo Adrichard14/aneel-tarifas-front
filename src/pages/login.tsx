@@ -1,4 +1,5 @@
-
+import { Row, Col, Container, Card, Alert, Button, ButtonGroup } from 'react-bootstrap';
+import Form from 'react-bootstrap/Form';
 import useIP from "@/hooks/useIP";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -11,7 +12,7 @@ const LoginPage = () => {
   const [senha, setSenha] = useState<string>("");
   const [logado, setLogado] = useState<boolean>(false);
   const [showAlert, setShowAlert] = useState<boolean>(false);
-  const [textAlert, setTextAlert] = useState<string>("Preencha os campos para realizar o Login!!!");
+  const [textAlert, setTextAlert] = useState<string>(" ");
   const { userIp, city } = useIP();
   console.log(city, userIp);
 
@@ -41,62 +42,65 @@ const LoginPage = () => {
         handleLoginError();
       }
     } else {
-      handleLoginError();
+      handleLoginEmpty();
     }
   };
 
-  const handleLoginError = (): void => {
-    const erro = localStorage.getItem('loginError');
-    if (erro) {
-      setTextAlert("Email e/ou senha inválidos!!");
-      setShowAlert(true);
-    }
+  const handleLoginEmpty = (): void => {
+
+    setTextAlert("Por favor, preencha os campos para realizar o Login.");
+    setShowAlert(true);
   };
-  
+
+
+  const handleLoginError = (): void => {
+    setTextAlert("Email e/ou senha inválidos!!");
+    setShowAlert(true);
+  };
+
   const navigateToMainPage = (): void => {
     navigate('/'); // Navigates to the main page
   };
 
 
   return (
-    <div className="container d-flex justify-content-center align-content-center">
-      <div className="card mt-5 w-50">
-        <div className="card-body">
-          {showAlert && ( // Renderiza o alerta se showAlert for true
-            <div className="alert alert-danger" role="alert">
+    <Container className="d-flex justify-content-center align-items-center mt-5">
+      <Card className="w-50">
+        <Card.Body>
+          {showAlert && (
+            <Alert variant="danger" role="alert">
               {textAlert}
-            </div>
+            </Alert>
           )}
-          <form>
-            <div className="form-group">
-              <label htmlFor="email">E-mail</label>
-              <input
+          <Form>
+            <Form.Group>
+              <Form.Label htmlFor="email">E-mail</Form.Label>
+              <Form.Control
                 type="text"
-                className="form-control"
                 value={email}
                 onChange={handleEmailChange}
-                id="E-mail"
+                id="email"
                 placeholder="Ex: estudanteufs@gmail.com"
               />
-            </div>
-            <div className="form-group">
-              <label htmlFor="password">Senha</label>
-              <input
+            </Form.Group>
+            <Form.Group>
+              <Form.Label htmlFor="password">Senha</Form.Label>
+              <Form.Control
                 type="password"
-                className="form-control"
                 value={senha}
                 onChange={handleSenhaChange}
                 id="password"
                 placeholder="Senha"
               />
-            </div>
-            <button onClick={handleLogin} type="submit" className="btn btn-primary">
+            </Form.Group>
+            <Button onClick={handleLogin} type="submit" variant="primary" className="mt-3">
               Entrar
-            </button>
-          </form>
-        </div>
-      </div>
-    </div>
+            </Button>
+            <Button type='submit' variant='success' className='mt-3'>Registrar-se</Button>
+          </Form>
+        </Card.Body>
+      </Card>
+    </Container>
   );
 };
 

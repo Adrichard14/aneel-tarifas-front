@@ -28,6 +28,7 @@
   },
   "devDependencies": {
     "@types/react-datepicker": "^4.11.2",
+    "mini-css-extract-plugin": "^2.7.6",
     "swr": "^2.1.5"
   }
 }
