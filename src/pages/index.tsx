@@ -19,6 +19,7 @@ import TablePergunta10 from '../components/perguntas/pergunta10/table';
 import DatePicker from "react-datepicker";
 import { useLocation } from 'react-router-dom';
 import "react-datepicker/dist/react-datepicker.css";
+import useAuth from '@/hooks/useAuth';
 
 
 
@@ -125,12 +126,11 @@ const IndexPage = () => {
   }
 
   const Logged = () => {
-    const location = useLocation();
     useEffect(() => {
-      if (location.state?.logged === true) {
+      if (useAuth()) {
         setIsLogged(true);
       }
-    }, [location.state]);
+    },);
   };
 
   Logged();

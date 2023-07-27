@@ -16,7 +16,6 @@ const LoginPage = () => {
 
     const handleEmailChange = async (e: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
         setEmail(e.target.value);
-        setShowAlert(false);
     }
 
     const handleSenhaChange = async (e: React.ChangeEvent<HTMLInputElement>): Promise<void> =>{
@@ -37,10 +36,15 @@ const LoginPage = () => {
             handleLogadoChange();
             // Salva os dados do usuário no localStorage
             loginAuth(email, senha);
+            setTimeout(()=> {}, 1000);
             if (useAuth()){
                 handleRedirectHome();
             }else{
-                setTextAlert("Email e/ou senha incorretos!!");
+                let erro = localStorage.getItem('loginError');
+                if (erro){
+                    setTextAlert("Email e/ou senha inválidos!!");
+                    setShowAlert(true);
+                }
             }
 
         } else {
