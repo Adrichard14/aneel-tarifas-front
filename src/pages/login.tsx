@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import loginAuth from "@/hooks/loginAuth";
 import useAuth from "@/hooks/useAuth";
+import { Location } from 'react-router-dom';
 
 const LoginPage = () => {
 
@@ -37,7 +38,7 @@ const LoginPage = () => {
       const tentarLogar = await loginAuth(email, senha); // Wait for the loginAuth function to complete
       console.log("tentar logar:", tentarLogar);
       if (tentarLogar) {
-        navigateToMainPage(); // Navigate to the main page if the login is successful
+        navigate('/');
       } else {
         handleLoginError();
       }
