@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react';
+import React from 'react';
 import useSWR, { Fetcher } from 'swr';
 import axios from 'axios';
 import { Row, Col } from 'react-bootstrap';
@@ -16,10 +17,10 @@ import TablePergunta8 from '../components/perguntas/pergunta8/table';
 import TablePergunta9 from '../components/perguntas/pergunta9/table';
 import TablePergunta10 from '../components/perguntas/pergunta10/table';
 import DatePicker from "react-datepicker";
+import { useLocation } from 'react-router-dom';
 import "react-datepicker/dist/react-datepicker.css";
 
 
-const fetcher: Fetcher<any, string> = (url: string) => axios.get(url).then((res) => res.data);
 const apiURL = process.env.NEXT_PUBLIC_API_URL;
 
 const IndexPage = () => {
@@ -29,6 +30,7 @@ const IndexPage = () => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLogged, setIsLogged] = useState<boolean>(false);
   // Adicionar aqui novas questões que irão utilizar o filtro por data
   const questionsWithDateFilter = ['2'];
   const [showDateFilter, setShowDateFilter] = useState<boolean>(true);
@@ -60,7 +62,6 @@ const IndexPage = () => {
     '10': "tarifas/agentestarifas",
   };
   // dados mockados apenas para visualização
-
 
   const loadData = async (): Promise<void> => {
     if (!selectedQuestion)
@@ -121,7 +122,19 @@ const IndexPage = () => {
         return <div>Selecione uma pergunta para exibir os dados</div>
     }
   }
-  // const [value, onChange] = useState(new Date());
+
+  const Logged = () => {
+    const location = useLocation();
+    useEffect(() => {
+      if (location.state?.logged === true) {
+        setIsLogged(true);
+      }
+    }, [location.state]);
+  };
+
+  Logged();
+
+
   return (
     <>
       <Row className="justify-content-center align-items-center">

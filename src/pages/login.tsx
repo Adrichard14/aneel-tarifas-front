@@ -1,5 +1,6 @@
 'use client'
-import React, { useState } from "react"
+import useIP from "@/hooks/useIP";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import loginAuth from "@/hooks/loginAuth";
 import useAuth from "@/hooks/useAuth";
@@ -11,6 +12,8 @@ const LoginPage = () => {
     const [logado, setLogado] = useState<boolean>(false);
     const [showAlert, setShowAlert] = useState<boolean>(false);
     const [textAlert, setTextAlert] = useState<string>("Preencha os campos para realizar o Login!!!");
+    const { userIp, city } = useIP();
+    console.log(city, userIp);
 
     const navigate = useNavigate()
 
@@ -26,20 +29,18 @@ const LoginPage = () => {
         setLogado(!logado);
     };
 
-    function verifyLogin(): boolean {
+    function verifyLogin(): boolean { // verifica se os campos não estão vazios
         return email !== "" && senha !== "";
     }
     
     const handleLogin = (e: React.MouseEvent<HTMLButtonElement>): void => {
         e.preventDefault(); // Evita o comportamento padrão do botão submit
         if (verifyLogin()) {
-            handleLogadoChange();
             // Salva os dados do usuário no localStorage
-            loginAuth(email, senha);
-            setTimeout(()=> {}, 1000);
-            handleRedirectHome();
-            if (useAuth()){
-                handleRedirectHome();
+            if (loginAuth(email, senha)){
+                handleLogadoChange();
+                navigate('/');
+
             }else{
                 let erro = localStorage.getItem('loginError');
                 if (erro){
@@ -48,13 +49,13 @@ const LoginPage = () => {
                 }
             }
 
-        } else {
+        }else {
             setShowAlert(true); // Exibe o alerta
         }
     };
 
     const handleRedirectHome = () => {
-        navigate('/', { state: { logged: logado } });
+        navigate('/');
     };
 
     return (

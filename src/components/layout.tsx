@@ -9,32 +9,35 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import useAuth from '../hooks/useAuth';
+import loginAuth from '@/hooks/loginAuth';
 
 export default function Layout({ children }: any) {
   const [isLoginPage, setIsLoginPage] = useState(false);
+  const [loginSuccess, setLoginSuccess] = useState(false);
   const navigate = useNavigate();
   const loginPagePath = '/login';
   const homePagePath = '/';
   const location = useLocation();
 
   useEffect(() => {
-    if (location.pathname == loginPagePath) {
-      return setIsLoginPage(true);
+    if (location.pathname === loginPagePath) {
+      setIsLoginPage(true);
+    } else {
+      if (useAuth()) {
+        setLoginSuccess(true);
+        navigate('/');
+      } else {
+        navigate('/login');
+      }
+      setIsLoginPage(false);
     }
-    let user = useAuth();
-    if (!user && !(location.pathname == loginPagePath)) {
-      navigate('/login');
-    }
-    return setIsLoginPage(false);
   }, [location.pathname]);
 
-  const handleLoginRedirect = () => {
-    navigate('/login'); // Redireciona para a página de login
-  };
 
   const handleLogout = () => {
     localStorage.removeItem("user");
-    navigate('/');
+    setLoginSuccess(false);
+    navigate('/login');
   };
 
   return (
