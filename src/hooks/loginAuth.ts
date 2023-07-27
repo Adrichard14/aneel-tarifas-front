@@ -1,16 +1,15 @@
+'use client'
 import axios from "axios";
 import {useEffect, useState} from "react";
 
 const apiURL = process.env.NEXT_PUBLIC_API_URL;
 const loginURL = `${apiURL}auth/sign_in`;
 
-const loginAuth = (email: string, senha: string) => {
 
+const loginAuth = (email: string, senha: string):boolean => {
     let userTokens = {};
-    const [loginSucess, setLoginSucess] = useState<Boolean>(false);
-    useEffect (() => {
-        const login =async () => {
-            try {
+    const login = async () => {
+        try {
                 const response = await axios.post(loginURL, {
                         'email': email,
                         'password': senha,
@@ -20,28 +19,22 @@ const loginAuth = (email: string, senha: string) => {
                     let token;
                     let uid;
                     let client;
-                    uid = response.data.uid;
+                    uid = email;
                     token = response.headers['access-token'];
                     client = response.headers['client'];
             
-                    userTokens = {"token": token, "uid": uid, "client": client};
-                    setLoginSucess(true);
-            
+                    userTokens = {"token": token, "uid": uid, "client": client};            
                     localStorage.setItem('user', JSON.stringify(userTokens));
+                    return true;
                 }
                 else{
-                    setLoginSucess(false);
+                    return false;
                 }
-        
-                
-                } catch (error) {
-                    console.log(error);
-                }
-        }
-        login();
-    }, []);
-    
-    return loginSucess;
+            } catch (error) {
+                console.log(error);
+            }
+    }
+    login();
 }
 
 export default loginAuth;

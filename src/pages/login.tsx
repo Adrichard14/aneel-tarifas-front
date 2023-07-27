@@ -40,7 +40,7 @@ const LoginPage = () => {
             // Salva os dados do usuário no localStorage
             if (loginAuth(email, senha)){
                 handleLogadoChange();
-                handleRedirectHome();
+                navigate('/');
 
             }else{
                 setTextAlert("Email e/ou senha incorretos!!");
@@ -52,7 +52,7 @@ const LoginPage = () => {
     };
 
     const handleRedirectHome = () => {
-        navigate('/', { state: { logged: logado } });
+        navigate('/');
     };
 
     return (
