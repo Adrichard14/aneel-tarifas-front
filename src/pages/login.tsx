@@ -2,19 +2,22 @@
 import useIP from "@/hooks/useIP";
 import React, { useState } from "react"
 import { useNavigate } from "react-router-dom";
+import loginAuth from "@/hooks/loginAuth";
+import useAuth from "@/hooks/useAuth";
 
 const LoginPage = () => {
 
     const [email, setEmail] = useState<string>("");
     const [senha, setSenha] = useState<string>("");
     const [logado, setLogado] = useState<boolean>(false);
-    const { userIp, city } = useIP();
-    console.log(city, userIp);
+    const [showAlert, setShowAlert] = useState<boolean>(false);
+    const [textAlert, setTextAlert] = useState<string>("Preencha os campos para realizar o Login!!!");
 
     const navigate = useNavigate()
 
     const handleEmailChange = async (e: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
         setEmail(e.target.value);
+        setShowAlert(false);
     }
 
     const handleSenhaChange = async (e: React.ChangeEvent<HTMLInputElement>): Promise<void> =>{
@@ -25,65 +28,72 @@ const LoginPage = () => {
         setLogado(!logado);
     };
 
-    function verifyLogin(email: string, senha: string) {
-        if (email !== "" && senha !== ""){
-            return true;
-        }
-        else {
-            return false;
-        }
+    function verifyLogin(): boolean {
+        return email !== "" && senha !== "";
     }
+    
+    const handleLogin = (e: React.MouseEvent<HTMLButtonElement>): void => {
+        e.preventDefault(); // Evita o comportamento padrão do botão submit
+        if (verifyLogin()) {
+            handleLogadoChange();
+            // Salva os dados do usuário no localStorage
+            loginAuth(email, senha);
+            if (useAuth()){
+                handleRedirectHome();
+            }else{
+                setTextAlert("Email e/ou senha incorretos!!");
+            }
 
-    const handleLogin = async (e: any): Promise<void> => {
-        if (verifyLogin(email, senha)) {
-          handleLogadoChange();
-          console.log(logado);
-          // Save user data to localStorage
-          const userData = { email, senha };
-          localStorage.setItem("user", JSON.stringify(userData));
-          handleRedirectHome();
         } else {
-          alert("Preencha os campos para realizar o Login!!!");
+            setShowAlert(true); // Exibe o alerta
         }
-      };
+    };
 
     const handleRedirectHome = () => {
-    console.log(logado); // Log the updated value of logado.
-    navigate('/', { state: { logged: logado } });
+        navigate('/', { state: { logged: logado } });
     };
 
     return (
         <div className="container d-flex justify-content-center align-content-center">
-            <div className="card mt-5 w-50">
-                <div className="card-body">
-                    <form>
-                        <div className="form-group">
-                            <label htmlFor="email">E-mail</label>
-                            <input 
-                                type="text" 
-                                className="form-control"
-                                value={email}
-                                onChange={handleEmailChange}
-                                id="E-mail" 
-                                placeholder="Ex: estudanteufs@gmail.com" />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="password">Senha</label>
-                            <input 
-                                type="password" 
-                                className="form-control" 
-                                value={senha}
-                                onChange={handleSenhaChange}
-                                id="password" 
-                                placeholder="Senha"/>
-                        </div>
-                        <button onClick={handleLogin} type="submit" className="btn btn-primary">Entrar</button>
-                    </form>
-                </div>
+      <div className="card mt-5 w-50">
+        <div className="card-body">
+          {showAlert && ( // Renderiza o alerta se showAlert for true
+            <div className="alert alert-danger" role="alert">
+              {textAlert}
             </div>
+          )}
+          <form>
+            <div className="form-group">
+              <label htmlFor="email">E-mail</label>
+              <input
+                type="text"
+                className="form-control"
+                value={email}
+                onChange={handleEmailChange}
+                id="E-mail"
+                placeholder="Ex: estudanteufs@gmail.com"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="password">Senha</label>
+              <input
+                type="password"
+                className="form-control"
+                value={senha}
+                onChange={handleSenhaChange}
+                id="password"
+                placeholder="Senha"
+              />
+            </div>
+            <button onClick={handleLogin} type="submit" className="btn btn-primary">
+              Entrar
+            </button>
+          </form>
         </div>
-    )
-    
-}
+      </div>
+    </div>
+  );
+};
+
 
 export default LoginPage
