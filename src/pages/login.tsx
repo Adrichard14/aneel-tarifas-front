@@ -8,8 +8,8 @@ const LoginPage = () => {
     const [email, setEmail] = useState<string>("");
     const [senha, setSenha] = useState<string>("");
     const [logado, setLogado] = useState<boolean>(false);
-    const userIP = useIP();
-    console.log(userIP);
+    const { userIp, city } = useIP();
+    console.log(city, userIp);
 
     const navigate = useNavigate()
 

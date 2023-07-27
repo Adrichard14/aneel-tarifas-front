@@ -1,38 +1,35 @@
 'use client';
 import { useEffect, useState } from "react";
 
-type IP = {
-    ip?: string
-}
-
 type JSONResponse = {
-    ip?: string
-    errors?: Array<{ message: string }>
+  ip?: string
+  errors?: Array<{ message: string }>
 }
-// async function fetchIP(): Promise<IPApiResponse> {
-
-// }
 
 const useIP = () => {
-    const [ip, setIp] = useState("");
-    useEffect(() => {
-        const getIP = async () => {
-            const response = await fetch("https://api.ipify.org?format=json");
-            const { ip, errors }: JSONResponse = await response.json();
-            if(ip){
-                const locationResponse = await fetch(`http://ip-api.com/json/${ip}`);
-                console.log(locationResponse);
-                const { status, country, city }: any = locationResponse.json();
-                console.log(city);
-            }
-            // console.log(response.json());
-            // if (ip) {
-            //     setIp(ip);
-            // }F
+  const [userIp, setUserIp] = useState<string>("");
+  const [city, setCity] = useState<string>("");
+  useEffect(() => {
+    const getIP = async () => {
+      try {
+        const response = await fetch("https://api.ipify.org?format=json");
+        const { ip, errors }: JSONResponse = await response.json();
+        if (ip) {
+          setUserIp(ip);
+          const locationResponse = await fetch(`http://ip-api.com/json/${ip}`);
+          const { city }: any = await locationResponse.json();
+          if (city) {
+            setCity(city);
+          }
         }
-        getIP();
-    }, []);
-    return ip;
+      } catch (error) {
+        console.log('Ocorreu um erro ao buscar o IP!');
+        console.log(error);
+      }
+    }
+    getIP();
+  }, []);
+  return { userIp, city };
 }
 
 export default useIP;
