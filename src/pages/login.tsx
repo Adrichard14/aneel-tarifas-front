@@ -37,6 +37,7 @@ const LoginPage = () => {
             // Salva os dados do usuário no localStorage
             loginAuth(email, senha);
             setTimeout(()=> {}, 1000);
+            handleRedirectHome();
             if (useAuth()){
                 handleRedirectHome();
             }else{
