@@ -1,4 +1,5 @@
 'use client'
+import useIP from "@/hooks/useIP";
 import React, { useState } from "react"
 import { useNavigate } from "react-router-dom";
 import loginAuth from "@/hooks/loginAuth";
@@ -11,6 +12,8 @@ const LoginPage = () => {
     const [logado, setLogado] = useState<boolean>(false);
     const [showAlert, setShowAlert] = useState<boolean>(false);
     const [textAlert, setTextAlert] = useState<string>("Preencha os campos para realizar o Login!!!");
+    const { userIp, city } = useIP();
+    console.log(city, userIp);
 
     const navigate = useNavigate()
 
