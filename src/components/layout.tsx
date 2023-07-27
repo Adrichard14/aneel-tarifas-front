@@ -1,3 +1,4 @@
+'use client'
 import Container from 'react-bootstrap/Container';
 import Link from 'next/link'
 import React from 'react';
@@ -9,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import useAuth from '../hooks/useAuth';
-import loginAuth from '@/hooks/loginAuth';
+import logoutAuth from '@/hooks/logoutAuth';
 
 export default function Layout({ children }: any) {
   const [isLoginPage, setIsLoginPage] = useState(false);
@@ -20,24 +21,20 @@ export default function Layout({ children }: any) {
   const location = useLocation();
 
   useEffect(() => {
-    if (location.pathname === loginPagePath) {
-      setIsLoginPage(true);
-    } else {
-      if (useAuth()) {
-        setLoginSuccess(true);
-        navigate('/');
-      } else {
-        navigate('/login');
-      }
-      setIsLoginPage(false);
+    setIsLoginPage(location.pathname === loginPagePath);
+    if(useAuth()){
+      setLoginSuccess(true);
+      navigate('/');
     }
-  }, [location.pathname]);
+    else if (isLoginPage && loginSuccess && !useAuth()) {
+      setLoginSuccess(false);
+    }
+  }, [location.pathname, isLoginPage, loginSuccess]);
 
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
-    setLoginSuccess(false);
-    navigate('/login');
+    logoutAuth();
+    navigate(loginPagePath);
   };
 
   return (

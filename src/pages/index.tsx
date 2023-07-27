@@ -123,17 +123,6 @@ const IndexPage = () => {
     }
   }
 
-  const Logged = () => {
-    const location = useLocation();
-    useEffect(() => {
-      if (location.state?.logged === true) {
-        setIsLogged(true);
-      }
-    }, [location.state]);
-  };
-
-  Logged();
-
 
   return (
     <>
