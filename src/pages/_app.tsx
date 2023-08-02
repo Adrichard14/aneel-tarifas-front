@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Layout from '../components/layout';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import LoginPage from './login';
+import RegisterPage from './register';
 
 export default function MyApp({ Component, pageProps }: any) {
   const [hasWindow, setHasWindow] = useState(false);
@@ -19,6 +20,7 @@ export default function MyApp({ Component, pageProps }: any) {
           <Routes>
             <Route path="/" element={<Component {...pageProps} />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path='/register' element={<RegisterPage />} />
           </Routes>
         </Layout>
       </Router>

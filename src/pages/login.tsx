@@ -63,6 +63,10 @@ const LoginPage = () => {
     navigate('/'); // Navigates to the main page
   };
 
+  const navigateRegisterPage = (): void => {
+    navigate('/register');
+  };
+
 
   return (
     <Container className="d-flex justify-content-center align-items-center mt-5">
@@ -97,7 +101,7 @@ const LoginPage = () => {
             <Button onClick={handleLogin} type="submit" variant="primary" className="mt-3">
               Entrar
             </Button>
-            <Button type='submit' variant='success' className='mt-3'>Registrar-se</Button>
+            <Button onClick={navigateRegisterPage} type='submit' variant='success' className='mt-3'>Registrar-se</Button>
           </Form>
         </Card.Body>
       </Card>
