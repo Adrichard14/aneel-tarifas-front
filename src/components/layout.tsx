@@ -14,14 +14,17 @@ import logoutAuth from '@/hooks/logoutAuth';
 
 export default function Layout({ children }: any) {
   const [isLoginPage, setIsLoginPage] = useState(false);
+  const [isRegisterPage, setIsRegisterPage] = useState(false);
   const [loginSuccess, setLoginSuccess] = useState(false);
   const navigate = useNavigate();
   const loginPagePath = '/login';
   const homePagePath = '/';
+  const registerPagePath = '/register';
   const location = useLocation();
 
   useEffect(() => {
     setIsLoginPage(location.pathname === loginPagePath);
+    setIsRegisterPage(location.pathname === registerPagePath);
     if(useAuth()){
       setLoginSuccess(true);
       navigate('/');
@@ -29,7 +32,7 @@ export default function Layout({ children }: any) {
     else if (isLoginPage && loginSuccess && !useAuth()) {
       setLoginSuccess(false);
     }
-  }, [location.pathname, isLoginPage, loginSuccess]);
+  }, [location.pathname, isLoginPage, isRegisterPage, loginSuccess]);
 
 
   const handleLogout = () => {
@@ -48,7 +51,7 @@ export default function Layout({ children }: any) {
             <Nav className="me-auto">
               <NavLink to={"/"} style={{ textDecoration: 'none' }}>Início</NavLink>
             </Nav>
-            {!isLoginPage && (<Button onClick={handleLogout} className="btn btn-danger">Sair</Button>)}
+            {!isLoginPage && !isRegisterPage && (<Button onClick={handleLogout} className="btn btn-danger">Sair</Button>)}
           </Navbar.Collapse>
         </Container>
       </Navbar>
