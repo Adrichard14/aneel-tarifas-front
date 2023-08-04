@@ -1,6 +1,8 @@
 'use client'
 import React, { useState } from "react";
 import { Form, Container, Card, Alert, Button } from "react-bootstrap";
+import RegisterAuth from "../hooks/registerAuth";
+import { useNavigate } from "react-router-dom";
 
 
 const RegisterPage = () => {
@@ -11,6 +13,8 @@ const RegisterPage = () => {
     const [textAlert, setTextAlert] = useState("");
     const [showAlert, setShowAlert] = useState(false);
     const [sucessRegister, setSucessRegister] = useState(false);
+
+    const navigate = useNavigate();
 
     const handlePasswordChange = async (e: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
         setPassword(e.target.value);
@@ -73,8 +77,14 @@ const RegisterPage = () => {
     const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
         e.preventDefault();
         if (verifyCredentials()){
-
+            var registro = RegisterAuth(email, password, passwordConfirm);
+            console.log(registro);
         }
+    }
+
+    const handleCancel = (e: React.MouseEvent<HTMLButtonElement>): void => {
+        e.preventDefault();
+        navigate('/login');
     }
 
     return(
@@ -120,8 +130,8 @@ const RegisterPage = () => {
               </Form.Group>
             </Form>
                 <Container className="d-flex justify-content-between">
-                    <Button type="submit" variant="success" className="mt-3" >Confirmar cadastro</Button>
-                    <Button type="submit" variant="danger" className="mt-3" >Cancelar</Button>
+                    <Button onClick={handleSubmit} type="submit" variant="success" className="mt-3" >Confirmar cadastro</Button>
+                    <Button onClick={handleCancel} type="submit" variant="danger" className="mt-3" >Cancelar</Button>
                 </Container>
           </Card.Body>
         </Card>

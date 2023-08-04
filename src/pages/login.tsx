@@ -98,10 +98,12 @@ const LoginPage = () => {
                 placeholder="Senha"
               />
             </Form.Group>
-            <Button onClick={handleLogin} type="submit" variant="primary" className="mt-3">
-              Entrar
-            </Button>
-            <Button onClick={navigateRegisterPage} type='submit' variant='success' className='mt-3'>Registrar-se</Button>
+              <Container className="d-flex justify-content-between">
+                <Button onClick={handleLogin} type="submit" variant="primary" className="mt-3">
+                  Entrar
+                </Button>
+                <Button onClick={navigateRegisterPage} type='submit' variant='success' className='mt-3'>Registrar-se</Button>
+              </Container>
           </Form>
         </Card.Body>
       </Card>
