@@ -36,7 +36,6 @@ const LoginPage = () => {
     e.preventDefault(); // Evita o comportamento padrão do botão submit
     if (verifyLogin()) {
       const tentarLogar = await loginAuth(email, senha); // Wait for the loginAuth function to complete
-      console.log("tentar logar:", tentarLogar);
       if (tentarLogar) {
         navigate('/');
       } else {
@@ -48,7 +47,6 @@ const LoginPage = () => {
   };
 
   const handleLoginEmpty = (): void => {
-
     setTextAlert("Por favor, preencha os campos para realizar o Login.");
     setShowAlert(true);
   };

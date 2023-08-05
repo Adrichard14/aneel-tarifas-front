@@ -19,8 +19,8 @@ export default function MyApp({ Component, pageProps }: any) {
         <Layout>
           <Routes>
             <Route path="/" element={<Component {...pageProps} />} />
-            <Route path="/login" element={<LoginPage />} />
             <Route path='/register' element={<RegisterPage />} />
+            <Route path="/login" element={<LoginPage />} />
           </Routes>
         </Layout>
       </Router>
