@@ -11,6 +11,7 @@ import { Button } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import useAuth from '../hooks/useAuth';
 import logoutAuth from '@/hooks/logoutAuth';
+import { usePathname } from 'next/navigation'
 
 export default function Layout({ children }: any) {
   const [isLoginPage, setIsLoginPage] = useState(false);
@@ -21,13 +22,16 @@ export default function Layout({ children }: any) {
   const homePagePath = '/';
   const registerPagePath = '/register';
   const location = useLocation();
+  const pathname = usePathname();
 
   useEffect(() => {
     setIsLoginPage(location.pathname === loginPagePath);
     setIsRegisterPage(location.pathname === registerPagePath);
     if(useAuth()){
       setLoginSuccess(true);
-      navigate('/');
+    }
+    else if(!useAuth() && !isLoginPage && !isRegisterPage) {
+      navigate(loginPagePath);
     }
     else if (isLoginPage && loginSuccess && !useAuth()) {
       setLoginSuccess(false);
