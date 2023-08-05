@@ -110,6 +110,7 @@ const RegisterPage = () => {
         const registro = await RegisterAuth(email, password, passwordConfirm);
         verifyRegister(registro);
         setIsloading(false);
+        navigate('/login');
       } catch (error) {
         console.error(error); // Handle any errors here
       }

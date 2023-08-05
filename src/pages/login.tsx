@@ -14,6 +14,7 @@ const LoginPage = () => {
   const [logado, setLogado] = useState<boolean>(false);
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [textAlert, setTextAlert] = useState<string>(" ");
+  const [isLoading, setIsloading] = useState(false);
   const { userIp, city } = useIP();
   console.log(city, userIp);
 
@@ -34,6 +35,7 @@ const LoginPage = () => {
 
   const handleLogin = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
     e.preventDefault(); // Evita o comportamento padrão do botão submit
+    setIsloading(true);
     if (verifyLogin()) {
       const tentarLogar = await loginAuth(email, senha); // Wait for the loginAuth function to complete
       if (tentarLogar) {
@@ -96,12 +98,15 @@ const LoginPage = () => {
                 placeholder="Senha"
               />
             </Form.Group>
-              <Container className="d-flex justify-content-between">
-                <Button onClick={handleLogin} type="submit" variant="primary" className="mt-3">
-                  Entrar
-                </Button>
-                <Button onClick={navigateRegisterPage} type='submit' variant='success' className='mt-3'>Registrar-se</Button>
-              </Container>
+            <Container className="d-flex justify-content-between">
+              <Button onClick={handleLogin} disabled={isLoading} type="submit" variant="primary" className="mt-3">
+                {isLoading ? <>
+                  <span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                  Entrando...
+                </> : 'Entrar'}
+              </Button>
+              <Button onClick={navigateRegisterPage} type='submit' variant='success' className='mt-3'>Registrar-se</Button>
+            </Container>
           </Form>
         </Card.Body>
       </Card>
