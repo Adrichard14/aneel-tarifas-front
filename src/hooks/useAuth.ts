@@ -1,3 +1,5 @@
+import { useRouter } from 'next/router';
+
 const useAuth = () => {
     let user;
     user = JSON.parse(localStorage.getItem('user') || '{}');
