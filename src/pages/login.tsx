@@ -82,6 +82,10 @@ const LoginPage = () => {
     navigate("/register");
   };
 
+  const navigatePasswordPage = (): void => {
+    navigate('/password');
+  }
+
   return (
     <Container className="d-flex justify-content-center align-items-center mt-5">
       <Card className="w-50">
@@ -133,6 +137,7 @@ const LoginPage = () => {
                   "Entrar"
                 )}
               </Button>
+              <Button onClick={navigatePasswordPage} variant="link" type="submit">Esqueci minha senha</Button>
               <Button
                 onClick={navigateRegisterPage}
                 type="submit"

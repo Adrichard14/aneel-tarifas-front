@@ -16,21 +16,24 @@ import { usePathname } from 'next/navigation'
 export default function Layout({ children }: any) {
   const [isLoginPage, setIsLoginPage] = useState(false);
   const [isRegisterPage, setIsRegisterPage] = useState(false);
+  const [isPasswordPage, setIsPasswordPage] = useState(false);
   const [loginSuccess, setLoginSuccess] = useState(false);
   const navigate = useNavigate();
   const loginPagePath = '/login';
   const homePagePath = '/';
   const registerPagePath = '/register';
+  const passwordPagePath = '/password';
   const location = useLocation();
   const pathname = usePathname();
 
   useEffect(() => {
     setIsLoginPage(location.pathname === loginPagePath);
     setIsRegisterPage(location.pathname === registerPagePath);
+    setIsPasswordPage(location.pathname === passwordPagePath)
     if(useAuth()){
       setLoginSuccess(true);
     }
-    else if(!useAuth() && !isLoginPage && !isRegisterPage) {
+    else if(!useAuth() && !isLoginPage && !isRegisterPage && !passwordPagePath) {
       navigate(loginPagePath);
     }
     else if (isLoginPage && loginSuccess && !useAuth()) {
@@ -55,7 +58,7 @@ export default function Layout({ children }: any) {
             <Nav className="me-auto">
               <NavLink to={"/"} style={{ textDecoration: 'none' }}>Início</NavLink>
             </Nav>
-            {!isLoginPage && !isRegisterPage && (<Button onClick={handleLogout} className="btn btn-danger">Sair</Button>)}
+            {!isLoginPage && !isRegisterPage && !isPasswordPage && (<Button onClick={handleLogout} className="btn btn-danger">Sair</Button>)}
           </Navbar.Collapse>
         </Container>
       </Navbar>
