@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import loginAuth from "@/hooks/loginAuth";
 import useAuth from "@/hooks/useAuth";
 import { Location } from "react-router-dom";
+import { saveLocation } from "@/lib/api";
 
 const LoginPage = () => {
   const [email, setEmail] = useState<string>("");
@@ -22,9 +23,7 @@ const LoginPage = () => {
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [textAlert, setTextAlert] = useState<string>(" ");
   const [isLoading, setIsloading] = useState(false);
-  const { userIp, city } = useIP();
-  console.log(city, userIp);
-
+  const { location } = useIP();
   const navigate = useNavigate();
 
   const handleEmailChange = async (
@@ -53,6 +52,7 @@ const LoginPage = () => {
       const tentarLogar: any = await loginAuth(email, senha); // Wait for the loginAuth function to complete
       if (tentarLogar) {
         setIsloading(false);
+        await saveLocation(location);
         navigate("/");
       } else {
         setIsloading(false);
