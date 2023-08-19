@@ -1,4 +1,5 @@
 'use client';
+import { saveLocation } from "@/lib/api";
 import { useEffect, useState } from "react";
 
 type JSONResponse = {
@@ -8,7 +9,7 @@ type JSONResponse = {
 
 const useIP = () => {
   const [userIp, setUserIp] = useState<string>("");
-  const [city, setCity] = useState<string>("");
+  const [location, setLocation] = useState<string>("");
   useEffect(() => {
     const getIP = async () => {
       try {
@@ -17,9 +18,10 @@ const useIP = () => {
         if (ip) {
           setUserIp(ip);
           const locationResponse = await fetch(`http://ip-api.com/json/${ip}`);
-          const { city }: any = await locationResponse.json();
-          if (city) {
-            setCity(city);
+
+          const locationData = await locationResponse.json();
+          if (locationData) {
+            setLocation(locationData);
           }
         }
       } catch (error) {
@@ -29,7 +31,7 @@ const useIP = () => {
     }
     getIP();
   }, []);
-  return { userIp, city };
+  return { location };
 }
 
 export default useIP;
