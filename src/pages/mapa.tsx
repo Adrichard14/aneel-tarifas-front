@@ -57,8 +57,8 @@ const MapPage = ({ props }: any) => {
           <thead>
             <tr>
               <th>Cidade</th>
-              <th>País</th>
               <th>Estado</th>
+              <th>País</th>
               <th>Data de acesso</th>
             </tr>
           </thead>
