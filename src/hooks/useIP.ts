@@ -17,7 +17,11 @@ const useIP = () => {
         const { ip, errors }: JSONResponse = await response.json();
         if (ip) {
           setUserIp(ip);
-          const locationResponse = await fetch(`https://ip-api.com/json/${ip}`);
+          const locationResponse = await fetch(`https://api.apilayer.com/ip_to_location/${ip}?access_key=186e4883b0f64af92dce23fbb828034f`, {
+            headers: {
+              "apikey": "VqotScyXutnyHJyYJF83o7xTvY9jE9Nh",
+            },
+          });
 
           const locationData = await locationResponse.json();
           if (locationData) {
