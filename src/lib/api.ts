@@ -1,12 +1,12 @@
 import axios from 'axios';
 
-export async function saveLocation({ city, region, country, lat, lon }: any) {
+export async function saveLocation({ city, region_name, country_name, latitude, longitude }: any) {
   const apiURL = process.env.NEXT_PUBLIC_API_URL;
   const userCredentials = localStorage.getItem("user");
   const { token, uid, client } = JSON.parse(userCredentials || "{}");
   try {
     const { data } = await axios.post(`${apiURL}locations`, {
-      city, region, country, latitude: lat, longitude: lon
+      city, region: region_name, country: country_name, latitude, longitude
     }, {
       headers: {
         Accept: "application/json",
