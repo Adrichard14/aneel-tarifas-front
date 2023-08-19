@@ -17,7 +17,7 @@ const useIP = () => {
         const { ip, errors }: JSONResponse = await response.json();
         if (ip) {
           setUserIp(ip);
-          const locationResponse = await fetch(`http://ip-api.com/json/${ip}`);
+          const locationResponse = await fetch(`https://ip-api.com/json/${ip}`);
 
           const locationData = await locationResponse.json();
           if (locationData) {
