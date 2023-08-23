@@ -53,8 +53,8 @@ export default function Layout({ children }: any) {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-              <NavLink className="mx-3 text-primary" to={"/"} style={{ textDecoration: 'none' }}>Início</NavLink>
-              <NavLink className="mx-3 text-primary" to={"/mapa"} style={{ textDecoration: 'none' }}>Mapa de acessos</NavLink>
+              <NavLink className="mx-3 menu-item" to={"/"} style={{ textDecoration: 'none', color: '#024d6c', fontWeight: 500 }}>Início</NavLink>
+              <NavLink className="mx-3 menu-item" to={"/mapa"} style={{ textDecoration: 'none', color: '#024d6c', fontWeight: 500 }}>Mapa de acessos</NavLink>
             </Nav>
             {!isLoginPage && !isRegisterPage && (<Button onClick={handleLogout} className="btn btn-danger">Sair</Button>)}
           </Navbar.Collapse>
