@@ -26,6 +26,12 @@ const LoginPage = () => {
   const { location } = useIP();
   const navigate = useNavigate();
 
+
+  useEffect(() => {
+    if(logado) {
+      navigate("/");
+    }
+  }, [logado]);
   const handleEmailChange = async (
     e: React.ChangeEvent<HTMLInputElement>
   ): Promise<void> => {
@@ -53,7 +59,7 @@ const LoginPage = () => {
       if (tentarLogar) {
         setIsloading(false);
         saveLocation(location);
-        navigate("/");
+        setLogado(true);
       } else {
         setIsloading(false);
         handleLoginError();
