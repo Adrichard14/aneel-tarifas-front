@@ -52,7 +52,7 @@ const LoginPage = () => {
       const tentarLogar: any = await loginAuth(email, senha); // Wait for the loginAuth function to complete
       if (tentarLogar) {
         setIsloading(false);
-        await saveLocation(location);
+        saveLocation(location);
         navigate("/");
       } else {
         setIsloading(false);
