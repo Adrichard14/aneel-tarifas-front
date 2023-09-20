@@ -19,16 +19,18 @@ import TablePergunta10 from "../components/perguntas/pergunta10/table";
 import DatePicker from "react-datepicker";
 import { useLocation } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
+import ReactPaginate from "react-paginate";
 
 const apiURL = process.env.NEXT_PUBLIC_API_URL;
 
 const IndexPage = () => {
   const [selectedQuestion, setSelectedQuestion] = useState<any | string>("");
   const [searchQuestion, setSearchQuestion] = useState<any | string>("");
-  const [tableData, setTableData] = useState<any | null>([]);
+  const [tableData, setTableData] = useState<any | null>();
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [activePage, setActivePage] = useState(0);
   const [isLogged, setIsLogged] = useState<boolean>(false);
   // Adicionar aqui novas questões que irão utilizar o filtro por data
   const questionsWithDateFilter = ["2"];
@@ -92,19 +94,19 @@ const IndexPage = () => {
   };
   // dados mockados apenas para visualização
 
-  const loadData = async (): Promise<void> => {
+  const loadData = async (page = null): Promise<void> => {
     if (!selectedQuestion) return;
     setIsLoading(true);
     setTableData([]);
     const extraParams = showDateFilter
       ? `/${moment(startDate).format("YYYY-MM-DD")}/${moment(endDate).format(
-          "YYYY-MM-DD"
-        )}`
+        "YYYY-MM-DD"
+      )}`
       : "";
+    const pageConfig = page ? `?page=${page}` : '';
     const userCredentials = localStorage.getItem("user");
     const { token, uid, client } = JSON.parse(userCredentials || "{}");
-    console.log(token, uid, client);
-    let questionURL = `${apiURL}${URLs[selectedQuestion]}${extraParams}`;
+    let questionURL = `${apiURL}${URLs[selectedQuestion]}${extraParams}${pageConfig}`;
     try {
       const { data } = await axios.get(questionURL, {
         method: "get",
@@ -139,28 +141,32 @@ const IndexPage = () => {
   const renderTable = (question: string): any => {
     switch (parseInt(question)) {
       case 1:
-        return <TabelaPergunta1 data={tableData} />;
+        return <TabelaPergunta1 data={tableData || []} loadData={loadData} isLoading={isLoading} />;
       case 2:
-        return <TabelaPergunta2 data={tableData} />;
+        return <TabelaPergunta2 data={tableData || []} loadData={loadData} isLoading={isLoading} />;
       case 3:
-        return <TablePergunta3 data={tableData} />;
+        return <TablePergunta3 data={tableData || []} />;
       case 4:
-        return <TablePergunta4 data={tableData} />;
+        return <TablePergunta4 data={tableData || []} />;
       case 5:
-        return <TablePergunta5 data={tableData} />;
+        return <TablePergunta5 data={tableData || []} loadData={loadData} isLoading={isLoading} />;
       case 6:
-        return <TablePergunta6 data={tableData} />;
+        return <TablePergunta6 data={tableData || []} />;
       case 7:
-        return <TablePergunta7 data={tableData} />;
+        return <TablePergunta7 data={tableData || []} />;
       case 8:
-        return <TablePergunta8 data={tableData} />;
+        return <TablePergunta8 data={tableData || []} />;
       case 9:
-        return <TablePergunta9 data={tableData} />;
+        return <TablePergunta9 data={tableData || []} loadData={loadData} isLoading={isLoading} />;
       case 10:
-        return <TablePergunta10 data={tableData} />;
+        return <TablePergunta10 data={tableData || []} loadData={loadData} isLoading={isLoading} />;
       default:
         return <div>Selecione uma pergunta para exibir os dados</div>;
     }
+  };
+  const handlePageClick = (event: any) => {
+    console.log(event.selected);
+    loadData(event.selected);
   };
 
   return (
@@ -245,19 +251,41 @@ const IndexPage = () => {
         </Col>
       </Row>
       <Row>
-        {selectedQuestion && tableData.length > 0 && !isLoading ? (
-          renderTable(selectedQuestion)
-        ) : (
-          <Row className="d-flex justify-content-center">
-            <Col>
-              <h4 className="text-center">
-                {isLoading
-                  ? "Carregando..."
-                  : "Selecione uma pergunta para exibir os dados"}
-              </h4>
-            </Col>
-          </Row>
-        )}
+        {selectedQuestion && (tableData?.length || tableData?.agentes?.length || tableData?.resolucoes?.length || tableData?.empresas?.length || tableData?.data_vigencia?.length || tableData?.valores?.length) ? (
+          <div className="d-flex pagination">
+            <ReactPaginate
+              containerClassName="pagination"
+              pageClassName="page-item"
+              pageLinkClassName="page-link"
+              nextClassName="page-item"
+              nextLinkClassName="page-link"
+              previousClassName="page-item"
+              previousLinkClassName="page-link"
+              activeLinkClassName="active"
+              breakLabel="..."
+              nextLabel=">>"
+              onPageChange={handlePageClick}
+              pageRangeDisplayed={3}
+              pageCount={tableData?.total_pages || 0}
+              previousLabel="<<"
+              renderOnZeroPageCount={null}
+            />
+          </div>
+        ) : (<Row className="d-flex justify-content-center">
+          <Col>
+            <h4 className="text-center">
+              {isLoading
+                ? "Carregando..."
+                : "Selecione uma pergunta para exibir os dados e clique em Buscar"}
+            </h4>
+          </Col>
+        </Row>)
+        }
+
+        {
+          selectedQuestion && (
+            renderTable(selectedQuestion))
+        }
       </Row>
     </>
   );
