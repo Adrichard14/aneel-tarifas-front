@@ -14,7 +14,7 @@ export default function Table({ data }: any) {
           </tr>
         </thead>
         <tbody>
-          {data.map((row: any) => (
+               {data?.length > 0 && data?.map((row: any) => (
             <tr key={row.id}>
               <td>{row.dscclasse}</td>
               <td>{row.dscsubclasse}</td>
