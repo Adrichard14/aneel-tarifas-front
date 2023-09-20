@@ -251,7 +251,7 @@ const IndexPage = () => {
         </Col>
       </Row>
       <Row>
-        {selectedQuestion && (tableData?.length || tableData?.agentes?.length || tableData?.resolucoes?.length || tableData?.empresas?.length || tableData?.data_vigencia?.length || tableData?.valores?.length) ? (
+        {selectedQuestion ? (
           <div className="d-flex pagination">
             <ReactPaginate
               containerClassName="pagination"
