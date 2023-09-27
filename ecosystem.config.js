@@ -8,7 +8,7 @@ module.exports = {
       key: 'EC2-NEXT.pem',
       user : 'ubuntu',
       host : '54.197.79.29',
-      ref  : 'origin/master',
+      ref  : 'origin/main',
       repo : 'https://github.com/Adrichard14/aneel-tarifas-front',
       path : '/home/ubuntu',
       'pre-deploy-local': '',
